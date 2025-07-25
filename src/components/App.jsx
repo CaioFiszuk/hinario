@@ -23,18 +23,19 @@ function App() {
       getHymns();
     }, []);
   return (
-    <>
-      <h1>hinario</h1>
+    <div className="main-page">
+      <h1 className="main-page__title">Harpa Cristã</h1>
+
+      <input type="search" className="search-bar" placeholder="Buscar Hino..."/>
 
       {
-        hymns.map((hymn)=>(
-          <ul key={hymn.number}>
-            <li>{hymn.title}</li>
-          </ul>
-        ))
-
+       <ul className="hymn-list">
+        {hymns.map((hymn) => (
+           <li key={hymn.number} className="hymn-item">{hymn.title}</li>
+        ))}
+       </ul>
       }
-    </>
+    </div>
   )
 }
 

@@ -1,0 +1,42 @@
+.main-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(to left, #e0f7fa, #00ffff, #ffffff);
+    padding: 200px;
+    height: 100%;
+}
+
+.main-page__title {
+    color: #003366;
+    font-size: 40px;
+    line-height: 45px;
+    margin-bottom: 30px;
+}
+
+.search-bar {
+    height: 40px;
+    width: 60%;
+    font-size: 30px;
+    padding-left: 10px;
+    border-radius: 10px;
+    border: none;
+    margin-bottom: 30px;
+}
+
+.search-bar:focus {
+    outline: none;
+}
+
+.hymn-list {
+    list-style: none;
+    width: 60%;
+}
+
+.hymn-item {
+    color: #003366;
+    font-size: 25px;
+    line-height: 30px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
