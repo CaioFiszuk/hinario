@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function App() {
     const [hymns, setHymns] = useState([]);
@@ -13,6 +14,7 @@ function App() {
         }
 
         setHymns(hymnTitles);
+        console.log(hymnTitles);
 
       } catch(error) {
         console.log(error);
@@ -23,19 +25,27 @@ function App() {
       getHymns();
     }, []);
   return (
-    <div className="main-page">
-      <h1 className="main-page__title">Harpa Cristã</h1>
+    <section className="main-page">
+      <h1 className="title">Harpa Cristã</h1>
 
       <input type="search" className="search-bar" placeholder="Buscar Hino..."/>
 
       {
        <ul className="hymn-list">
         {hymns.map((hymn) => (
-           <li key={hymn.number} className="hymn-item">{hymn.title}</li>
+          <li key={hymn.number} className="hymn-item">
+            <Link 
+              to={`/lyrics/${hymn.number}`} 
+              className="hymn-link"
+              state={hymn}
+            >
+                {hymn.title}
+            </Link>
+          </li>
         ))}
        </ul>
       }
-    </div>
+    </section>
   )
 }
 
