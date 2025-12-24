@@ -5,6 +5,12 @@ import { Link } from "react-router-dom";
 function App() {
     const [hymns, setHymns] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [search, setSearch] = useState("");
+    const filteredHymns = hymns.filter((hymn) =>
+      hymn.title
+       .toLowerCase()
+       .includes(search.toLowerCase())
+     );
 
     const getHymns = async () => {
       try {
@@ -31,17 +37,24 @@ function App() {
     useEffect(()=>{
       getHymns();
     }, []);
+
   return (
     <section className="main-page">
       <h1 className="title">Harpa Cristã</h1>
 
-      <input type="search" className="search-bar" placeholder="Buscar Hino..."/>
+      <input 
+        type="search" 
+        className="search-bar" 
+        placeholder="Buscar Hino..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
 
       {loading ? (
         <p>Carregando hinos...</p>
       ) : (
         <ul className="hymn-list">
-          {hymns.map(hymn => (
+          {filteredHymns.map(hymn => (
             <Link
               key={hymn.number}
               to={`/lyrics/${hymn.number}`}
