@@ -8,7 +8,7 @@ export function AppRoutes(){
         <Routes>
             <Route path='/' element={<App />}/>
 
-            <Route path='/lyrics/:id' element={<Lyrics />}/>
+            <Route path='/lyrics/:number' element={<Lyrics />}/>
 
         </Routes>
     );

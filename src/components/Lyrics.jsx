@@ -1,18 +1,22 @@
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import axios from "axios";
 
 function Lyrics() {
-    const location = useLocation();
+    const { number } = useParams();
     const [lyrics, setLyrics] = useState([]);
+    const [title, setTitle] = useState("");
+    const [loading, setLoading] = useState(true);
 
     const getHymn = async () => {
     try {
       const response = await axios.get(
-        `https://harpa-api.onrender.com/hymns/${location.state.number}`
+        `https://harpa-api.onrender.com/hymns/${number}`
       );
 
       setLyrics(response.data.hymn.verses);
+      setTitle(response.data.hymn.title);
+      setLoading(false);
 
     } catch (err) {
       console.error(err);
@@ -25,23 +29,18 @@ function Lyrics() {
 
   return (
     <section className='main-page'>
-      <h1 className='title'>{location.state.title}</h1>
       
-      {
-        lyrics ? (
-           <div>
-              {
-                lyrics.map((v)=>(
-                  <p className='lyrics'>{v.lyrics}</p>
-                ))
-              }
-           </div>
-        ) 
-        : 
-        (
-            <p>nao encontrado</p>
-        )
-      }
+      <h1 className='title'>{title}</h1>
+
+      {loading ? (
+        <p>Carregando hino...</p>
+      ) : (
+        <ul className="hymn-list">
+          {lyrics.map(v => (
+             <p className='lyrics'>{v.lyrics}</p>
+          ))}
+        </ul>
+     )}
     </section>
   )
 }

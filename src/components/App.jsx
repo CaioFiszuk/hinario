@@ -4,17 +4,24 @@ import { Link } from "react-router-dom";
 
 function App() {
     const [hymns, setHymns] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const getHymns = async () => {
       try {
         let hymnTitles = [];
-        for(let i = 0; i < 64; i++) {
-            const hymn = await axios.get(`https://harpa-api.onrender.com/hymns?page=${i+1}`);
-            hymnTitles.push(...hymn.data.hymns);
+
+        for(let i = 1; i <= 64; i++) {
+            hymnTitles.push(axios.get(`https://harpa-api.onrender.com/hymns?page=${i}`));
         }
 
-        setHymns(hymnTitles);
-        console.log(hymnTitles);
+        const responses = await Promise.all(hymnTitles);
+
+         const allHymns = responses.flatMap(
+           res => res.data.hymns
+          );
+
+        setHymns(allHymns);
+        setLoading(false);
 
       } catch(error) {
         console.log(error);
@@ -30,21 +37,21 @@ function App() {
 
       <input type="search" className="search-bar" placeholder="Buscar Hino..."/>
 
-      {
-       <ul className="hymn-list">
-        {hymns.map((hymn) => (
-          <li key={hymn.number} className="hymn-item">
-            <Link 
-              to={`/lyrics/${hymn.number}`} 
+      {loading ? (
+        <p>Carregando hinos...</p>
+      ) : (
+        <ul className="hymn-list">
+          {hymns.map(hymn => (
+            <Link
+              key={hymn.number}
+              to={`/lyrics/${hymn.number}`}
               className="hymn-link"
-              state={hymn}
             >
-                {hymn.title}
-            </Link>
-          </li>
-        ))}
-       </ul>
-      }
+              <li className="hymn-item">{hymn.title}</li>
+           </Link>
+          ))}
+        </ul>
+     )}
     </section>
   )
 }
